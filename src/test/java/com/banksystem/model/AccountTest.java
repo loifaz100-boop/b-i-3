@@ -27,7 +27,7 @@ class AccountTest {
     void testDepositChecking() {
         checkingAccount.deposit(500.0);
         // Kiểm tra số dư sau khi nạp: 1000 + 500 = 1500
-        assertEquals(9999.0, checkingAccount.getBalance(), "Số dư tài khoản vãng lai không khớp sau khi nạp");
+        assertEquals(1500.0, checkingAccount.getBalance(), "Số dư tài khoản vãng lai không khớp sau khi nạp");
     }
 
     @Test
