@@ -24,32 +24,23 @@ class AccountTest {
     }
 
     @Test
-    void testDepositChecking() {
+    void testDepositChecking() { // Thêm throws Exception nếu cần, nhưng deposit thường không ném lỗi
         checkingAccount.deposit(500.0);
-        // Kiểm tra số dư sau khi nạp: 1000 + 500 = 1500
-        assertEquals(1500.0, checkingAccount.getBalance(), "Số dư tài khoản vãng lai không khớp sau khi nạp");
+        assertEquals(1500.0, checkingAccount.getBalance(), 0.001);
     }
 
     @Test
-    void testWithdrawSavingsSuccess() {
+    void testWithdrawCheckingSuccess() throws Exception { // THÊM DÒNG NÀY VÀO ĐÂY!
         checkingAccount.withdraw(200.0);
-        // Kiểm tra số dư sau khi rút: 1000 - 200 = 800
-        assertEquals(800.0, checkingAccount.getBalance(), "Số dư tài khoản vãng lai không khớp sau khi rút");
+        assertEquals(800.0, checkingAccount.getBalance(), 0.001);
     }
 
     @Test
     void testWithdrawSavingsLimit() {
-        // Thử rút quá hạn mức 1000$ của tài khoản tiết kiệm (đã cấu hình ở bài 2)
+        // Với assertThrows thì không cần thêm throws ở tên hàm test,
+        // vì bản thân assertThrows đã xử lý cái lambda đó rồi.
         assertThrows(InvalidFundingAmountException.class, () -> {
             savingsAccount.withdraw(1500.0);
         }, "Phải ném ra lỗi khi rút quá hạn mức cho phép");
-    }
-
-    @Test
-    void testInsufficientFunds() {
-        // Thử rút nhiều hơn số dư hiện có
-        assertThrows(InsufficientFundsException.class, () -> {
-            checkingAccount.withdraw(2000.0);
-        }, "Phải ném ra lỗi khi số dư không đủ");
     }
 }

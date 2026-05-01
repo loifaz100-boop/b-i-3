@@ -59,9 +59,8 @@ public abstract class Account {
         }
     }
 
-    public abstract void deposit(double amount);
-
-    public abstract void withdraw(double amount);
+    public abstract void deposit(double amount); // Có thể giữ nguyên hoặc throws tùy ý
+    public abstract void withdraw(double amount) throws BankException; // BẮT BUỘC có throws
 
     protected void doDepositing(double amount) throws InvalidFundingAmountException {
         if (amount <= 0) {
