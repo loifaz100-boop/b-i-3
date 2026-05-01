@@ -1,5 +1,5 @@
 package com.banksystem.model;
-
+import com.banksystem.exception.BankException;
 import com.banksystem.exception.InsufficientFundsException;
 import com.banksystem.exception.InvalidFundingAmountException;
 import org.slf4j.Logger;
@@ -39,28 +39,24 @@ public class SavingsAccount extends Account {
     }
 
     @Override
-    public void withdraw(double amount) {
+    public void withdraw(double amount) throws BankException {
         double initialBalance = getBalance();
-        try {
-            if (amount > MAX_WITHDRAW) {
-                throw new InvalidFundingAmountException(amount);
-            }
-            if (initialBalance - amount < MIN_BALANCE) {
-                throw new InsufficientFundsException(amount);
-            }
 
-            doWithdrawing(amount);
-            double finalBalance = getBalance();
-
-            Transaction transaction = new Transaction(
-                    Transaction.TYPE_WITHDRAW_SAVINGS, amount, initialBalance, finalBalance);
-            addTransaction(transaction);
-
-            logger.info("Rút tiền tiết kiệm thành công. Số tiền: {}, Số dư mới: {}", amount, finalBalance);
-        } catch (InvalidFundingAmountException | InsufficientFundsException e) {
-            logger.error("Giao dịch rút tiền thất bại: {}", e.getMessage(), e);
-        } catch (Exception e) {
-            logger.error("Lỗi hệ thống không xác định khi rút tiền", e);
+        // Kiểm tra điều kiện hạn mức
+        if (amount > MAX_WITHDRAW) {
+            throw new InvalidFundingAmountException(amount);
         }
+        if (initialBalance - amount < MIN_BALANCE) {
+            throw new InsufficientFundsException(amount);
+        }
+
+        doWithdrawing(amount);
+        double finalBalance = getBalance();
+
+        Transaction transaction = new Transaction(
+                Transaction.TYPE_WITHDRAW_SAVINGS, amount, initialBalance, finalBalance);
+        addTransaction(transaction);
+
+        logger.info("Rút tiền tiết kiệm thành công. Số dư mới: {}", finalBalance);
     }
 }

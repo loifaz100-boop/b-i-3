@@ -30,11 +30,10 @@ class AccountTest {
     }
 
     @Test
-    void testWithdrawCheckingSuccess() throws Exception { // THÊM DÒNG NÀY VÀO ĐÂY!
+    void testWithdrawCheckingSuccess() throws Exception { // Thêm throws ở đây
         checkingAccount.withdraw(200.0);
         assertEquals(800.0, checkingAccount.getBalance(), 0.001);
     }
-
     @Test
     void testWithdrawSavingsLimit() {
         // Với assertThrows thì không cần thêm throws ở tên hàm test,

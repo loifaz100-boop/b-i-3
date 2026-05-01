@@ -34,10 +34,10 @@ public class CheckingAccount extends Account {
     }
 
     @Override
-    public void withdraw(double amount) throws BankException { // Ném lỗi ra cho Test bắt
+    public void withdraw(double amount) throws BankException {
         double initialBalance = getBalance();
 
-        // Gọi hàm logic chính, nếu có lỗi nó sẽ tự văng ra ngoài luôn
+        // Không dùng try-catch ở đây nữa, để lỗi văng ra ngoài
         doWithdrawing(amount);
 
         double finalBalance = getBalance();
@@ -45,6 +45,7 @@ public class CheckingAccount extends Account {
                 Transaction.TYPE_WITHDRAW_CHECKING, amount, initialBalance, finalBalance);
         addTransaction(transaction);
 
-        logger.info("Rút tiền thành công: -{}", amount);
+        logger.info("Rút tiền vãng lai thành công. Tài khoản: {}, Số dư mới: {}",
+                getAccountNumber(), finalBalance);
     }
 }
